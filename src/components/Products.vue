@@ -83,7 +83,7 @@
 
             <div class="page">
 
-              <button v-on:click="previousPageClick()" :disabled="pageNumber==1" type="button" class="btn btn-info">Prev page</button>
+              <button v-on:click="previousPageClick()" :disabled="this.$store.state.pageNumber<1" type="button" class="btn btn-info">Prev page</button>
               <button v-on:click="nextPageClick()" :disabled="pageNumber > (productsPerPage / pageNumber) - 2" type="button" class="btn btn-info">Next page</button>
 
             </div>
@@ -117,17 +117,7 @@
     },
 
     created() {
-      // axios.get('http://localhost:3003/products')
-      //   .then((response) => {
-      //     console.log('-----------')
-      //     console.log(response)
-      //     this.products = response.data
-      //   })
-      //   .catch(e => {
-      //     this.error.push(e)
-      //   })
       this.products = this.$store.dispatch('GET_PRODUCTS');
-
     },
     methods: {
       getProducts() {
@@ -144,10 +134,14 @@
         this.$store.dispatch("GET_PRODUCTS")
       },
       sortByCostLow() {
-        store.products.sort((a, b) => a.price - b.price)
+        let order_by = true;
+        this.$store.commit("SET_SORT", order_by);
+        this.$store.dispatch("GET_PRODUCTS")
       },
       sortByCostHigh() {
-        store.products.sort((a, b) => b.price - a.price)
+        let order_by = false;
+        this.$store.commit("SET_SORT", order_by);
+        this.$store.dispatch("GET_PRODUCTS")
       }
     }
   }

@@ -5,7 +5,6 @@ import Axios from 'axios';
 
 Vue.use(Vuex);
 
-// eslint-disable-next-line
 export const store = new Vuex.Store({
   state: {
     apiBaseUrl: 'http://localhost:3003/',
@@ -13,13 +12,11 @@ export const store = new Vuex.Store({
     productsPerPage: 6,
     pageNumber: 0,
     name: [],
-    errors: []
+    errors: [],
+    order_by: true
   },
 
   getters : {
-    // PRODUCTS : state => {
-    //   return state.products;
-    // }
     products(state) {
       return state.products;
     }
@@ -31,30 +28,26 @@ export const store = new Vuex.Store({
     },
     SET_PAGE : (state, pageNumber) => {
       state.pageNumber = pageNumber;
+    },
+    SET_SORT : (state, orderBy) => {
+      state.order_by = orderBy;
     }
   },
 
   actions: {
-  //   usersCreate: (context, data) => {
-  //     Api.post('/users', data)
-  //       .then(response => context.commit('updateProperty', { property: 'authenticatedUser', value: response.body }))
-  //       // eslint-disable-next-line
-  //       .catch(error => console.error(error));
-  //   },
-
     GET_PRODUCTS : (context, payload) => {
       let params = {
         ...(payload || {}),
         ...{
           productsPerPage: context.state.productsPerPage,
-          pageNumber: context.state.pageNumber
+          pageNumber: context.state.pageNumber,
+          order_by: context.state.order_by
         }
       };
 
       Axios.get('http://localhost:3003/products', {params: params}).then((response) => {
         context.commit('SET_PRODUCTS', response.data);
       })
-
     },
   },
 });
