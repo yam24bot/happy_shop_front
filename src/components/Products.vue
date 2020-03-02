@@ -39,7 +39,17 @@
           <div class="list-group">
             <a href="#" class="list-group-item">Category 1</a>
             <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a>
+            <a href="#" class="list-group-item">Category 3</a><div class="btn-group">
+
+            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort by cost
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" v-on:click="sortByCostLow()">Low price</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" v-on:click="sortByCostHigh()">High price</a>
+            </div>
+          </div>
           </div>
 
         </div>
@@ -50,7 +60,7 @@
 
           <div class="row">
 
-              <div v-for="(product) in paginatedProducts" :key="product.id" class="col-lg-4 col-md-6 mb-4">
+              <div v-for="(product) in getProducts()" :key="product.id" class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
   <!--                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>-->
                   <div class="card-body">
@@ -102,46 +112,42 @@
   import {mapActions, mapGetters} from 'vuex'
   import axios from 'axios'
   export default {
-    name: 'Products',
-    data() {
-      return {
-        productsPerPage: 6,
-        pageNumber: 1,
-        products: [],
-        name: [],
-        errors: []
-      }
+
+    mounted() {
     },
+
     created() {
-      axios.get('http://localhost:3003/products')
-        .then((response) => {
-          console.log('-----------')
-          console.log(response)
-          this.products = response.data
-        })
-        .catch(e => {
-          this.error.push(e)
-        })
-    },
-    computed: {
-      // aaaa
-      paginatedProducts() {
-        let from = (this.pageNumber - 1) * this.productsPerPage;
-        let to = from + this.productsPerPage;
-        return this.products.slice(from, to);
-      }
+      // axios.get('http://localhost:3003/products')
+      //   .then((response) => {
+      //     console.log('-----------')
+      //     console.log(response)
+      //     this.products = response.data
+      //   })
+      //   .catch(e => {
+      //     this.error.push(e)
+      //   })
+      this.products = this.$store.dispatch('GET_PRODUCTS');
+
     },
     methods: {
+      getProducts() {
+        return this.$store.getters.products;
+      },
       previousPageClick() {
-        this.pageNumber--;
+        let pageNumber = this.$store.state.pageNumber - 1;
+        this.$store.commit("SET_PAGE", pageNumber);
+        this.$store.dispatch("GET_PRODUCTS")
       },
       nextPageClick() {
-        this.pageNumber++;
+        let pageNumber = this.$store.state.pageNumber + 1;
+        this.$store.commit("SET_PAGE", pageNumber);
+        this.$store.dispatch("GET_PRODUCTS")
       },
-      pageCount(){
-        let l = this.products.length,
-          s = this.size;
-        return Math.ceil(l/s);
+      sortByCostLow() {
+        store.products.sort((a, b) => a.price - b.price)
+      },
+      sortByCostHigh() {
+        store.products.sort((a, b) => b.price - a.price)
       }
     }
   }
