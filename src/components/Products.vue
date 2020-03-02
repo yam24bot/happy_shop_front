@@ -36,20 +36,29 @@
         <div class="col-lg-3">
 
           <h1 class="my-4">Shop Name</h1>
-          <div class="list-group">
-            <a href="#" class="list-group-item">Category 1</a>
-            <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a><div class="btn-group">
 
-            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Sort by cost
-            </button>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" v-on:click="sortByCostLow()">Low price</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" v-on:click="sortByCostHigh()">High price</a>
+          <div class="list-group">
+
+            <button v-on:click="getProducts()" class="btn btn-light">All products</button>
+
+            <div class="list-group" v-for="(category) in ['For soul', 'For body', 'For dinner']">
+
+              <button v-on:click="getProductsWithCategory(category)" class="btn btn-light">{{category}}</button>
+
             </div>
-          </div>
+
+            <div class="btn-group">
+
+
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort by cost
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" v-on:click="sortByCostLow()">Low price</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" v-on:click="sortByCostHigh()">High price</a>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -120,6 +129,11 @@
       this.products = this.$store.dispatch('GET_PRODUCTS');
     },
     methods: {
+      getProductsWithCategory(displayCategory) {
+        let category = displayCategory;
+        this.$store.commit("SET_CATEGORY", category);
+        this.$store.dispatch("GET_PRODUCTS")
+      },
       getProducts() {
         return this.$store.getters.products;
       },

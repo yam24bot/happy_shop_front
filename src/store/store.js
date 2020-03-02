@@ -13,13 +13,14 @@ export const store = new Vuex.Store({
     pageNumber: 0,
     name: [],
     errors: [],
-    order_by: true
+    order_by: true,
+    category: null
   },
 
   getters : {
     products(state) {
       return state.products;
-    }
+    },
   },
 
   mutations: {
@@ -31,8 +32,11 @@ export const store = new Vuex.Store({
     },
     SET_SORT : (state, orderBy) => {
       state.order_by = orderBy;
-    }
-  },
+    },
+    SET_CATEGORY : (state, category) => {
+      state.category = category;
+    },
+    },
 
   actions: {
     GET_PRODUCTS : (context, payload) => {
@@ -41,7 +45,8 @@ export const store = new Vuex.Store({
         ...{
           productsPerPage: context.state.productsPerPage,
           pageNumber: context.state.pageNumber,
-          order_by: context.state.order_by
+          order_by: context.state.order_by,
+          category: context.state.category
         }
       };
 
