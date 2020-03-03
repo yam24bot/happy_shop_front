@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    apiBaseUrl: process.env.API_LINK,
+    apiBaseUrl: 'https://happy-shop-rails.herokuapp.com/produtcts',
     products: [],
     productsPerPage: 6,
     pageNumber: 0,
