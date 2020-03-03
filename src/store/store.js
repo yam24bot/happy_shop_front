@@ -7,7 +7,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    apiBaseUrl: 'http://localhost:3003/',
+    apiBaseUrl: process.env.API_LINK,
     products: [],
     productsPerPage: 6,
     pageNumber: 0,
