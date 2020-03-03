@@ -50,7 +50,7 @@ export const store = new Vuex.Store({
         }
       };
 
-      Axios.get('https://happy-shop-rails.herokuapp.com/produtcts', {params: params}).then((response) => {
+      Axios.get('https://happy-shop-rails.herokuapp.com/products', {params: params}).then((response) => {
         context.commit('SET_PRODUCTS', response.data);
       })
     },
