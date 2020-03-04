@@ -35,8 +35,8 @@
                   <h4 class="card-title">
                     <a data-toggle="modal" @click="getProduct(product.id)" data-target="#exampleModalCenter" href="#">{{product.name}}</a>
                   </h4>
-                  <h5 v-if="product.price === product.sale_price">${{product.price}}</h5>
-                  <h5 style="color: darkred" v-else>{{product.sale_price}} <del>${{product.price}}</del></h5>
+                  <h5 v-if="product.price === product.sale_price">${{hundred_separator(product.price)}}</h5>
+                  <h5 style="color: darkred" v-else>${{hundred_separator(product.sale_price)}} <del>${{hundred_separator(product.price)}}</del></h5>
 <!--                  <p class="card-text">Description</p>-->
                 </div>
                 <div class="card-footer">
@@ -95,6 +95,11 @@
       this.products = this.$store.dispatch('GET_PRODUCTS');
     },
     methods: {
+      hundred_separator(num){
+        var num_parts = num.toString().split(".")
+        num_parts[0] = num_parts[0].replace(/\B(?=(\d{2})+(?!\d))/g, ",");
+        return num_parts.join(".");
+      },
       getProduct(id){
         this.currentProduct = this.getProducts().find(elem => {
           return elem.id === id
